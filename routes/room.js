@@ -8,14 +8,16 @@ router.post("/:hotelid", verifyAuth, createRoom);
 
 //UPDATE
 router.put("/availability/:id", updateRoomAvailability);
+
 router.put("/:id", verifyAuth, updateRoom);
+
 //DELETE
 router.delete("/:id/:hotelid", verifyAuth, deleteRoom);
+
 //GET
-
 router.get("/:id", getRoom);
-//GET ALL
 
+//GET ALL
 router.get("/", getRooms);
 
 export default router;
