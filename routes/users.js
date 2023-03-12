@@ -1,6 +1,6 @@
 import express from "express";
 import { deleteUser, getUser, getUsers, updateUser } from "../controllers/usersController.js";
-import { verifyAuth } from "../middlewares/verifyAuth.js";
+import { verifyAdmin, verifyAuth } from "../middlewares/verifyAuth.js";
 
 const router = express.Router();
 
@@ -19,16 +19,16 @@ router.get("/checkadmin/:id", verifyAuth, (req, res, next) => {
 });
 
 //GET ALL
-router.get("/", verifyAuth, getUsers);
+router.get("/", getUsers);
 
 //UPDATE
-router.put("/:id", verifyAuth, updateUser);
+router.put("/:id", updateUser);
 
 //DELETE
-router.delete("/:id", verifyAuth, deleteUser);
+router.delete("/:id", deleteUser);
 
 //GET
-router.get("/:id", verifyAuth, getUser);
+router.get("/:id", getUser);
 
 //GET ALL
 // router.get("/", verifyAdmin, getUsers);

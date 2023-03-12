@@ -6,13 +6,13 @@ import { verifyAuth } from "../middlewares/verifyAuth.js";
 const router = express.Router();
 
 //CREATE
-router.post("/", verifyAuth, createHotel);
+router.post("/",  createHotel);
 
 //UPDATE
-router.put("/:id", verifyAuth, updateHotel);
+router.put("/:id",  updateHotel);
 
 //DELETE
-router.delete("/:id", verifyAuth, deleteHotel);
+router.delete("/:id", deleteHotel);
 
 //GET
 router.get("/find/:id", getHotel);
