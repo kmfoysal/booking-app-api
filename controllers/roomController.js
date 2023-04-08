@@ -1,3 +1,4 @@
+import nodemailer from "nodemailer";
 import Hotel from "../models/Hotel.js";
 import Room from "../models/Room.js";
 
@@ -31,6 +32,13 @@ export const updateRoom = async (req, res, next) => {
 };
 
 export const updateRoomAvailability = async (req, res, next) => {
+
+    const { bookingInfo } = req.body;
+
+     const roomList = bookingInfo?.hotelRoomNumbers[0]?.map((item) => `<li>${item?.number}</li>`).join("");
+    
+    console.log(bookingInfo?.hotelRoomNumbers);
+    
     try {
         await Room.updateOne(
             { "roomNumbers._id": req.params.id },
@@ -40,7 +48,45 @@ export const updateRoomAvailability = async (req, res, next) => {
                 },
             }
         );
+
+
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD,
+          },
+        });
+
+        const mailOptions = {
+          from: process.env.EMAIL,
+          to: bookingInfo?.email,
+          subject: "Hotel Reservation Info",
+          html: `<h1>Congratulation ${bookingInfo?.name}! You successfully reserve the room.</h1> 
+          <h4>Hotel Name : ${bookingInfo?.hotelName}</h4>
+          <h4>Hotel Address : ${bookingInfo?.hotelAddress}</h4>
+          <h4>
+            Rooms Numbers:
+            <ul>
+                ${roomList}
+            </ul>
+          </h4>
+          <h4>Total No. of Days : ${bookingInfo?.totalDays}</h4>
+          <h4>Total Price : ${bookingInfo?.totaPrice}</h4>`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log("Error" + error);
+          } else {
+            console.log("Email sent:" + info.response);
+            res.status(201).json({ status: 201, info });
+          }
+        });
+
+
         res.status(200).json("Room status has been updated.");
+
     } catch (err) {
         next(err);
     }
