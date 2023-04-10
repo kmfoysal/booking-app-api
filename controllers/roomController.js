@@ -35,7 +35,7 @@ export const updateRoomAvailability = async (req, res, next) => {
 
     const { bookingInfo } = req.body;
 
-     const roomList = bookingInfo?.hotelRoomNumbers[0]?.map((item) => `<li>${item?.number}</li>`).join("");
+     const roomList = bookingInfo?.hotelRoomNumbers[0]?.map((item) => `<span>${item?.number}</span>`).join("");
     
     console.log(bookingInfo?.hotelRoomNumbers);
     
@@ -66,10 +66,7 @@ export const updateRoomAvailability = async (req, res, next) => {
           <h4>Hotel Name : ${bookingInfo?.hotelName}</h4>
           <h4>Hotel Address : ${bookingInfo?.hotelAddress}</h4>
           <h4>
-            Rooms Numbers:
-            <ul>
-                ${roomList}
-            </ul>
+            Rooms Numbers: ${roomList}
           </h4>
           <h4>Total No. of Days : ${bookingInfo?.totalDays}</h4>
           <h4>Total Price : ${bookingInfo?.totaPrice}</h4>`,
@@ -91,6 +88,7 @@ export const updateRoomAvailability = async (req, res, next) => {
         next(err);
     }
 };
+
 export const deleteRoom = async (req, res, next) => {
     const hotelId = req.params.hotelid;
     try {
@@ -107,6 +105,7 @@ export const deleteRoom = async (req, res, next) => {
         next(err);
     }
 };
+
 export const getRoom = async (req, res, next) => {
     try {
         const room = await Room.findById(req.params.id);
@@ -115,6 +114,7 @@ export const getRoom = async (req, res, next) => {
         next(err);
     }
 };
+
 export const getRooms = async (req, res, next) => {
     try {
         const rooms = await Room.find();
